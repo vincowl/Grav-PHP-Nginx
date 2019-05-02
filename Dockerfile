@@ -1,4 +1,4 @@
-FROM phusion/baseimage
+FROM phusion/baseimage:0.11
 
 MAINTAINER Ahumaro Mendoza <ahumaro@ahumaro.com>
 
@@ -8,9 +8,11 @@ ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
 
 #Install core packages
+RUN apt-get install software-properties-common
+RUN add-apt-repository ppa:ondrej/php
 RUN apt-get update -q
 RUN apt-get upgrade -y -q
-RUN apt-get install -y -q php php-cli php-fpm php-gd php-curl php-apcu php-xml php-mbstring php-zip ca-certificates nginx git-core
+RUN apt-get install -y -q php7.3 php7.3-cli php7.3-fpm php7.3-gd php7.3-curl php7.3-apcu php7.3-xml php7.3-mbstring php7.3-zip ca-certificates nginx git-core
 RUN apt-get clean -q && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 #Get Grav
@@ -51,17 +53,17 @@ RUN echo '#!/bin/bash \n\
 RUN /etc/nginx/grav_conf.sh
 RUN sed -i \
         -e 's|root /home/USER/www/html|root   /usr/share/nginx/html|' \
-        -e 's|unix:/var/run/php5-fpm.sock;|unix:/run/php/php7.0-fpm.sock;|' \
+        -e 's|unix:/var/run/php5-fpm.sock;|unix:/run/php/php7.3-fpm.sock;|' \
     /etc/nginx/sites-available/default
 
 #Setup Php service
 RUN mkdir -p /run/php/
-RUN touch /run/php/php7.0-fpm.sock
+RUN touch /run/php/php7.3-fpm.sock
 RUN mkdir -p /etc/service/php-fpm
 RUN touch /etc/service/php-fpm/run
 RUN chmod +x /etc/service/php-fpm/run
 RUN echo '#!/bin/bash \n\
-    exec /usr/sbin/php-fpm7.0 -F' >> /etc/service/php-fpm/run
+    exec /usr/sbin/php-fpm7.3 -F' >> /etc/service/php-fpm/run
 
 #Setup Nginx service
 RUN mkdir -p /etc/service/nginx
