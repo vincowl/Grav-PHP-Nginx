@@ -10,6 +10,7 @@ ENV DEBIAN_FRONTEND noninteractive
 #Install core packages
 RUN apt-get install software-properties-common
 RUN add-apt-repository ppa:ondrej/php
+RUN add-apt-repository ppa:ondrej/nginx
 RUN apt-get update -q
 RUN apt-get upgrade -y -q
 RUN apt-get install -y -q php7.3 php7.3-cli php7.3-fpm php7.3-gd php7.3-curl php7.3-apcu php7.3-xml php7.3-mbstring php7.3-zip ca-certificates nginx git-core
@@ -53,7 +54,7 @@ RUN echo '#!/bin/bash \n\
 RUN /etc/nginx/grav_conf.sh
 RUN sed -i \
         -e 's|root /home/USER/www/html|root   /usr/share/nginx/html|' \
-        -e 's|unix:/var/run/php5-fpm.sock;|unix:/run/php/php7.3-fpm.sock;|' \
+        -e 's|unix:/var/run/php/php7.2-fpm.sock;|unix:/run/php/php7.3-fpm.sock;|' \
     /etc/nginx/sites-available/default
 
 #Setup Php service
