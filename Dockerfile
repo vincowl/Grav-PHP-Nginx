@@ -82,9 +82,10 @@ RUN rm -f /etc/service/sshd/down
 RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
 
 #Install admin plugin
-RUN /usr/share/nginx/html/bin/gpm version -f
-RUN /usr/share/nginx/html/bin/gpm selfupgrade
-RUN /usr/share/nginx/html/bin/gpm install admin
+RUN chmod +x bin/gpm
+RUN bin/gpm version -f
+RUN bin/gpm selfupgrade
+RUN bin/gpm install -y admin
 
 #Expose configuration and content volumes
 VOLUME /root/.ssh/ /usr/share/nginx/html/
