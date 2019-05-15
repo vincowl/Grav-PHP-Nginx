@@ -54,7 +54,7 @@ RUN echo '#!/bin/bash \n\
 RUN /etc/nginx/grav_conf.sh
 RUN sed -i \
         -e 's|root /home/USER/www/html|root   /usr/share/nginx/html|' \
-        -e 's|unix:/run/php/php7.0-fpm.sock;|unix:/run/php/php7.3-fpm.sock;|' \
+        -e 's|unix:/var/run/php/php7.2-fpm.sock;|unix:/run/php/php7.3-fpm.sock;|' \
     /etc/nginx/sites-available/default
 
 #Setup Php service
